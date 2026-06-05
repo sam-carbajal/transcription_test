@@ -52,10 +52,10 @@ if audio:
             mime="audio/wav"
         )
 
-    with open("recording.webm", "rb") as f:
+    if audio:
         st.download_button(
-            "Download Audio (WebM)",
-            data=f,
+            label="Download Audio",
+            data=audio["bytes"],
             file_name="recording.webm",
             mime="audio/webm"
         )
