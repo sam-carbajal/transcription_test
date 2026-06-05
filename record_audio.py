@@ -11,15 +11,24 @@ audio = mic_recorder(
     key="recorder",
 )
 
+filename = "recorded_audio.wav"
+
 if audio:
     st.audio(audio["bytes"])
 
     audio_data = np.frombuffer(audio["bytes"], dtype=np.int16)
 
     write(
-        "recorded_audio.wav",
+        filename,
         audio["sample_rate"],
         audio_data
     )
 
+    with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
+        st.download_button(
+            label="Download Audio (WAV)",
+            data=f,
+            file_name=filename,
+            mime="audio/wav"
+        )
     st.success("Audio saved!")
