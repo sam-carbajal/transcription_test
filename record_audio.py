@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 from streamlit_mic_recorder import mic_recorder
 from scipy.io.wavfile import write
@@ -20,6 +21,9 @@ mic_key = mic_options[selected_mic]
 
 st.session_state["microphone_key"] = mic_key
 
+if "last_audio_key" not in st.session_state:
+    st.session_state["last_audio_key"] = None
+
 audio = mic_recorder(
     start_prompt="🎤 Start Recording",
     stop_prompt="⏹ Stop Recording",
@@ -28,7 +32,14 @@ audio = mic_recorder(
 
 filename = f"recorded_audio_{mic_key}.wav"
 
+
 if audio:
+    if st.session_state["last_audio_key"] != filename:
+        # neue Aufnahme erkannt → alte Datei löschen
+        if os.path.exists(filename):
+            os.remove(filename)
+
+    st.session_state["last_audio_key"] = filename
     st.audio(audio["bytes"])
 
     audio_data = np.frombuffer(audio["bytes"], dtype=np.int16)
