@@ -30,7 +30,7 @@ audio = mic_recorder(
     key="recorder",
 )
 
-filename = f"recorded_audio_{mic_key}.wav"
+filename = f"recorded_audio_{mic_key}"
 
 
 if audio:
@@ -52,3 +52,10 @@ if audio:
             mime="audio/wav"
         )
 
+    with open("recording.webm", "rb") as f:
+        st.download_button(
+            "Download Audio (WebM)",
+            data=f,
+            file_name="recording.webm",
+            mime="audio/webm"
+        )
