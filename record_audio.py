@@ -25,8 +25,10 @@ if "last_audio_key" not in st.session_state:
 
 st.markdown("""
 <style>
-div[data-testid="stVerticalBlock"] {
-    overflow: visible !important;
+button {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    line-height: 1.2 !important;
 }
 </style>
 """, unsafe_allow_html=True)
