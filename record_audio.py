@@ -1,6 +1,4 @@
-import os
 import streamlit as st
-import hashlib
 from streamlit_mic_recorder import mic_recorder
 from scipy.io.wavfile import write
 import numpy as np
@@ -33,21 +31,17 @@ audio = mic_recorder(
 
 filename = f"recorded_audio_{mic_key}.wav"
 
-def get_hash(data):
-    return hashlib.md5(data).hexdigest()
 
 if audio:
+    st.audio(audio["bytes"])
 
-    audio_bytes = audio["bytes"]
-    audio_hash = get_hash(audio_bytes)
+    audio_data = np.frombuffer(audio["bytes"], dtype=np.int16)
 
-    if "last_audio_hash" not in st.session_state:
-        st.session_state["last_audio_hash"] = None
-
-    if st.session_state["last_audio_hash"] != audio_hash:
-        st.session_state["last_audio_hash"] = audio_hash
-
-    filename = "recorded_audio.wav"
+    write(
+        filename,
+        audio["sample_rate"],
+        audio_data
+    )
 
     with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
         st.download_button(
