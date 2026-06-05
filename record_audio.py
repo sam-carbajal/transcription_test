@@ -4,6 +4,21 @@ from scipy.io.wavfile import write
 import numpy as np
 
 st.title("Audio Recorder")
+mic_options = {
+    "Mikrofon A: Cherry Hochwertiges Studiomikrofon": "mA",
+    "Mikrofon B: Wireless Lavalier Interview Mikrofon": "mB",
+    "Mikrofon C: Omnidirektionales Konferenzmikrofon": "mC",
+    "Mikrofon D: Handy-Mikrofon": "mD"
+}
+
+selected_mic = st.selectbox(
+    "Wähle dein Mikrofon",
+    list(mic_options.keys())
+)
+
+mic_key = mic_options[selected_mic]
+
+st.session_state["microphone_key"] = mic_key
 
 audio = mic_recorder(
     start_prompt="🎤 Start Recording",
@@ -11,7 +26,7 @@ audio = mic_recorder(
     key="recorder",
 )
 
-filename = "recorded_audio.wav"
+filename = f"recorded_audio_{mic_key}.wav"
 
 if audio:
     st.audio(audio["bytes"])
@@ -31,4 +46,4 @@ if audio:
             file_name=filename,
             mime="audio/wav"
         )
-    st.success("Audio saved!")
+
