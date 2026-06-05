@@ -45,9 +45,7 @@ if audio:
         st.session_state["last_audio_hash"] = None
 
     if st.session_state["last_audio_hash"] != audio_hash:
-
-
-    st.session_state["last_audio_hash"] = audio_hash
+        st.session_state["last_audio_hash"] = audio_hash
 
     filename = "recorded_audio.wav"
 
