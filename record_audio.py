@@ -68,7 +68,7 @@ audio = mic_recorder(
 )
 
 filename = f"{speaker}_{gender}_{group}_{mic_key}.wav"
-print(filename)
+st.write(filename)
 
 if audio:
     st.audio(audio["bytes"])
