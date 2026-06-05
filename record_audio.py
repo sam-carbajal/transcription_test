@@ -48,14 +48,14 @@ if audio:
         st.download_button(
             label="Download Audio (WAV)",
             data=f,
-            file_name=filename,
+            file_name=f"{filename}.wav",
             mime="audio/wav"
         )
 
     if audio:
         st.download_button(
-            label="Download Audio",
+            label="Download Audio (WEBM)",
             data=audio["bytes"],
-            file_name="recording.webm",
+            file_name=f"{filename}.webm",
             mime="audio/webm"
         )
