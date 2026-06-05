@@ -72,7 +72,7 @@ audio = mic_recorder(
     key="recorder",
 )
 
-filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}"
+filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}.wav"
 
 
 if audio:
@@ -90,13 +90,13 @@ if audio:
         st.download_button(
             label="Download Audio (WAV)",
             data=f,
-            file_name=f"{filename}.wav",
+            file_name=filename,
             mime="audio/wav"
         )
 
         st.download_button(
             label="Download Audio (WEBM)",
             data=audio["bytes"],
-            file_name=f"{filename}.webm",
+            file_name=filename.replace(".wav", ".webm"),
             mime="audio/webm"
         )
