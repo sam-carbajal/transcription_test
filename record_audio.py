@@ -28,7 +28,6 @@ audio = mic_recorder(
     start_prompt="🎤 Start Recording",
     stop_prompt="⏹ Stop Recording",
     key="recorder",
-    use_container_width=True,
 )
 
 filename = f"recorded_audio_{mic_key}.wav"
