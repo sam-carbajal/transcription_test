@@ -78,25 +78,20 @@ filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}.wav"
 if audio:
     st.audio(audio["bytes"])
 
-    audio_data = np.frombuffer(audio["bytes"], dtype=np.int16)
+    with open(filename, "wb") as f:
+        f.write(audio["bytes"])
 
-    write(
-        filename,
-        audio["sample_rate"],
-        audio_data
+    #with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
+    st.download_button(
+        label="Download Audio (WAV)",
+        data=f,
+        file_name=filename,
+        mime="audio/wav"
     )
 
-    with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
-        st.download_button(
-            label="Download Audio (WAV)",
-            data=f,
-            file_name=filename,
-            mime="audio/wav"
-        )
-
-        st.download_button(
-            label="Download Audio (WEBM)",
-            data=audio["bytes"],
-            file_name=filename.replace(".wav", ".webm"),
-            mime="audio/webm"
-        )
+    st.download_button(
+        label="Download Audio (WEBM)",
+        data=audio["bytes"],
+        file_name=filename.replace(".wav", ".webm"),
+        mime="audio/webm"
+    )
