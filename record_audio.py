@@ -79,6 +79,7 @@ if audio:
     st.audio(audio["bytes"])
 
     with open(filename, "wb") as f:
+        st.write("bytes length:", len(audio["bytes"]))
         f.write(audio["bytes"])
 
     #with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
