@@ -4,6 +4,43 @@ from scipy.io.wavfile import write
 import numpy as np
 
 st.title("Audio Recorder")
+
+speaker = {
+    "Teilnehmende 1": "s1",
+    "Teilnehmende 2": "s2",
+    "Teilnehmende 3": "s3",
+    "Teilnehmende 4": "s4",
+    "Teilnehmende 5": "s5",
+    "Teilnehmende 6": "s6",
+}
+
+selected_speaker = st.selectbox(
+    "Wähle die Teilnehmernummer",
+    list(speaker.keys())
+)
+
+gender = {
+    "Mädchen": "f",
+    "Junge": "m",
+}
+
+selected_gender = st.selectbox(
+    "Wähle das Geschlecht des Kindes",
+    list(gender.keys())
+)
+
+group = {
+    "Gruppe 1: Vorgegebene Sätze": "g1",
+    "Gruppe 2: Leicht variierte Sätze": "g2",
+    "Gruppe 3: Spontane Sprache": "g3",
+}
+
+selected_group = st.selectbox(
+    "Wähle die Aufnahme-Gruppe",
+    list(group.keys())
+)
+
+
 mic_options = {
     "Mikrofon A: Cherry Hochwertiges Studiomikrofon": "mA",
     "Mikrofon B: Wireless Lavalier Interview Mikrofon": "mB",
@@ -30,7 +67,7 @@ audio = mic_recorder(
     key="recorder",
 )
 
-filename = f"recorded_audio_{mic_key}"
+filename = f"{speaker}_{gender}_{group}_{mic_key}.wav"
 
 
 if audio:
