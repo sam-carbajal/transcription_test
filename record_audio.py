@@ -19,6 +19,8 @@ selected_speaker = st.selectbox(
     list(speaker.keys())
 )
 
+speaker_key = speaker[selected_speaker]
+
 gender = {
     "Mädchen": "f",
     "Junge": "m",
@@ -28,6 +30,8 @@ selected_gender = st.selectbox(
     "Wähle das Geschlecht des Kindes",
     list(gender.keys())
 )
+
+gender_key = gender[selected_gender]
 
 group = {
     "Gruppe 1: Vorgegebene Sätze": "g1",
@@ -40,6 +44,7 @@ selected_group = st.selectbox(
     list(group.keys())
 )
 
+group_key = group[selected_group]
 
 mic_options = {
     "Mikrofon A: Cherry Hochwertiges Studiomikrofon": "mA",
@@ -67,27 +72,31 @@ audio = mic_recorder(
     key="recorder",
 )
 
-filename = f"{speaker}_{gender}_{group}_{mic_key}.wav"
-st.write(filename)
+filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}"
+
 
 if audio:
     st.audio(audio["bytes"])
 
-    with open(filename, "wb") as f:
-        f.write(audio["bytes"])
+    audio_data = np.frombuffer(audio["bytes"], dtype=np.int16)
 
-
-    #with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
-    st.download_button(
-        label="Download Audio (WAV)",
-        data=f,
-        file_name=filename,
-        mime="audio/wav"
+    write(
+        filename,
+        audio["sample_rate"],
+        audio_data
     )
 
-    #    st.download_button(
-    #        label="Download Audio (WEBM)",
-    #        data=audio["bytes"],
-    #        file_name=filename.replace(".wav", ".webm"),
-    #        mime="audio/webm"
-    #    )
+    with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
+        st.download_button(
+            label="Download Audio (WAV)",
+            data=f,
+            file_name=f"{filename}.wav",
+            mime="audio/wav"
+        )
+
+        st.download_button(
+            label="Download Audio (WEBM)",
+            data=audio["bytes"],
+            file_name=f"{filename}.webm",
+            mime="audio/webm"
+        )
