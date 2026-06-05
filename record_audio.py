@@ -23,6 +23,14 @@ st.session_state["microphone_key"] = mic_key
 if "last_audio_key" not in st.session_state:
     st.session_state["last_audio_key"] = None
 
+st.markdown("""
+<style>
+div[data-testid="stVerticalBlock"] {
+    overflow: visible !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 audio = mic_recorder(
     start_prompt="🎤 Start Recording",
     stop_prompt="⏹ Stop Recording",
