@@ -84,7 +84,7 @@ if audio:
     #with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
     st.download_button(
         label="Download Audio (WAV)",
-        data=f,
+        data=audio["bytes"],
         file_name=filename,
         mime="audio/wav"
     )
