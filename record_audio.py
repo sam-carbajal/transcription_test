@@ -1,7 +1,5 @@
 import streamlit as st
 from streamlit_mic_recorder import mic_recorder
-from scipy.io.wavfile import write
-import numpy as np
 
 st.title("Audio Recorder")
 
@@ -69,6 +67,7 @@ if "last_audio_key" not in st.session_state:
 audio = mic_recorder(
     start_prompt="🎤 Start Recording",
     stop_prompt="⏹ Stop Recording",
+    format="wav",
     key="recorder",
 )
 
@@ -87,11 +86,4 @@ if audio:
         data=audio["bytes"],
         file_name=filename,
         mime="audio/wav"
-    )
-
-    st.download_button(
-        label="Download Audio (WEBM)",
-        data=audio["bytes"],
-        file_name=filename.replace(".wav", ".webm"),
-        mime="audio/webm"
     )
