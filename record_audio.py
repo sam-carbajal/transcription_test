@@ -72,10 +72,20 @@ audio = mic_recorder(
     key="recorder",
 )
 
+def detect_audio_format(audio_bytes):
+    if audio_bytes.startswith(b"RIFF"):
+        return "wav"
+    elif b"ftyp" in audio_bytes[:20]:
+        return "mp4/webm (iso container)"
+    elif audio_bytes.startswith(b"\x1aE\xdf\xa3"):
+        return "webm"
+    else:
+        return "unknown"
 
 if audio:
     st.audio(audio["bytes"])
-    st.write(audio["bytes"])
+    format_detected = detect_audio_format(audio["bytes"])
+    st.write("Detected format:", format_detected)
     #audio_format =  #st.write(audio) - audio format
 
     filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}.{audio_format}"
