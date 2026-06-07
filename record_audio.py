@@ -77,8 +77,7 @@ filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}.webm"
 
 if audio:
     st.audio(audio["bytes"])
-    st.write(audio["format"])
-    st.write(type(audio["bytes"]))
+    st.write(audio)
 
     with open(filename, "wb") as f:
         f.write(audio["bytes"])  #with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
