@@ -76,7 +76,7 @@ def detect_audio_format(audio_bytes):
     if audio_bytes.startswith(b"RIFF"):
         return "wav"
     elif b"ftyp" in audio_bytes[:20]:
-        return "mp4/webm (iso container)"
+        return "mp4/webm"
     elif audio_bytes.startswith(b"\x1aE\xdf\xa3"):
         return "webm"
     else:
@@ -86,7 +86,14 @@ if audio:
     st.audio(audio["bytes"])
     format_detected = detect_audio_format(audio["bytes"])
     st.write("Detected format:", format_detected)
-    #audio_format =  #st.write(audio) - audio format
+
+    audio_format = 0
+    if format_detected == "webm" or format_detected == "mp4/webm":
+        audio_format = "webm"
+    elif format_detected == "wav":
+        audio_format = "wav"
+    else:
+        audio_format = "unknown"
 
     filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}.{audio_format}"
     # Python Code entscheidet nicht das Format, der Browser entscheidet
