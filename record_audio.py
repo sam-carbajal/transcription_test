@@ -78,8 +78,8 @@ if audio:
     audio_format = "mp3"
     filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}.{audio_format}"
     # Python Code entscheidet nicht das Format, der Browser entscheidet
-    st.write(filename)
-    st.write(audio["format"])
+    #st.write(filename)
+    #st.write(audio["format"])
 
     with open(filename, "wb") as f:
         f.write(audio["bytes"])  #with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
