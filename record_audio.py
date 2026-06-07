@@ -77,10 +77,12 @@ filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}.wav"
 if audio:
     st.audio(audio["bytes"])
 
+    st.write(audio.keys())
     st.write(audio)
 
-    with open(filename, "wb") as f:  #with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
-         f.write(audio["bytes"])
+    with open(filename, "wb") as f:
+        f.write(audio["bytes"])  #with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
+
 
     st.download_button(
         label="Download Audio (WAV)",
