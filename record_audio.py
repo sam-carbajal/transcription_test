@@ -74,14 +74,14 @@ audio = mic_recorder(
 
 filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}.wav"
 
-
 if audio:
     st.audio(audio["bytes"])
 
-    with open(filename, "wb") as f:
-        st.write(audio)
+    st.write(audio)
 
-    #with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
+    with open(filename, "wb") as f:  #with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
+         f.write(audio["bytes"])
+
     st.download_button(
         label="Download Audio (WAV)",
         data=audio["bytes"],
