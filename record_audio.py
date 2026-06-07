@@ -74,7 +74,7 @@ audio = mic_recorder(
 
 if audio:
     st.audio(audio["bytes"], format="audio/mpeg")
-    st.audio(audio["bytes"], format="audio/mp4")
+    #st.audio(audio["bytes"], format="audio/mp4")
     audio_format = "mp3"
     filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}.{audio_format}"
     # Python Code entscheidet nicht das Format, der Browser entscheidet
