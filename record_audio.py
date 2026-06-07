@@ -86,7 +86,7 @@ if audio:
     #st.audio(audio["bytes"])
     format_detected = detect_audio_format(audio["bytes"])
     st.write("Detected format:", format_detected)
-    st.audio(audio["bytes"], format="audio/webm")
+    st.audio(audio["bytes"], format="audio/mpeg")
 
     audio_format = 0
     if format_detected == "webm" or format_detected == "mp4/webm":
