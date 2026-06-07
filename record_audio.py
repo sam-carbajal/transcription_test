@@ -75,7 +75,7 @@ audio = mic_recorder(
 
 if audio:
     st.audio(audio["bytes"])
-    st.write(audio)
+    st.write(audio["bytes"])
     #audio_format =  #st.write(audio) - audio format
 
     filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}.{audio_format}"
