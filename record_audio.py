@@ -94,6 +94,6 @@ if audio:
     st.download_button(
         label="Download Audio (WEBM)",
         data=audio["bytes"],
-        file_name=filename),
+        file_name=filename.replace(".mpeg", ".webm"),
         mime="audio/webm"
     )
