@@ -75,7 +75,8 @@ audio = mic_recorder(
 
 if audio:
     st.audio(audio["bytes"])
-    audio_format = audio #st.write(audio) - audio format
+    st.write(audio)
+    #audio_format =  #st.write(audio) - audio format
 
     filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}.{audio_format}"
     # Python Code entscheidet nicht das Format, der Browser entscheidet
