@@ -79,7 +79,7 @@ if audio:
     st.audio(audio["bytes"])
 
     with open(filename, "wb") as f:
-        f.write(audio["bytes"])
+        st.write(audio)
 
     #with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
     st.download_button(
