@@ -75,7 +75,7 @@ audio = mic_recorder(
 if audio:
     st.audio(audio["bytes"], format="audio/mpeg")
     st.audio(audio["bytes"], format="audio/mp4")
-    audio_format = "webm"
+    audio_format = "mpeg"
     filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}.{audio_format}"
     # Python Code entscheidet nicht das Format, der Browser entscheidet
     st.write(filename)
@@ -87,7 +87,7 @@ if audio:
     st.download_button(
         label="Download Audio (WAV)",
         data=audio["bytes"],
-        file_name=filename.replace(".webm", ".wav"),
+        file_name=filename.replace(".mpeg", ".wav"),
         mime="audio/wav"
     )
 
