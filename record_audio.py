@@ -66,34 +66,66 @@ if "last_audio_key" not in st.session_state:
     st.session_state["last_audio_key"] = None
 
 
+# format="wav" statt der Vorgabe "webm": der Browser liefert dann unkomprimiertes
+# PCM statt eines verlustbehaftet kodierten Streams (Safari: MP4/AAC, Chrome:
+# WebM/Opus). Das ist fuer die spaetere Messung entscheidend, denn ein
+# verlustbehafteter Codec hat keine Bittiefe, begrenzt die Bandbreite je nach
+# Browser unterschiedlich und macht Aufnahmen verschiedener Geraete damit
+# unvergleichbar. Siehe AUFNAHMEQUALITAET.md.
 audio = mic_recorder(
     start_prompt="🎤 Start Recording",
     stop_prompt="⏹ Stop Recording",
+    format="wav",
     key="recorder",
 )
 
+def erkenne_format(daten: bytes) -> tuple[str, str]:
+    """Bestimmt Endung und MIME-Typ aus den ersten Bytes der Aufnahme.
+
+    Noetig, weil das Python-Skript das Format nicht bestimmt -- der Browser tut
+    es. Eine fest vergebene Endung fuehrt sonst zu Dateien, die anders heissen
+    als sie sind: Safari liefert MP4/AAC, Chrome und Firefox liefern WebM/Opus.
+    Eine solche Datei laesst sich mit vielen Audiobibliotheken (etwa libsndfile,
+    und damit soundfile/librosa) gar nicht oeffnen, weil sie sich nach der
+    Endung richten oder am unerwarteten Header scheitern.
+    """
+    if len(daten) >= 12 and daten[4:8] == b"ftyp":
+        return "m4a", "audio/mp4"
+    if daten[:4] == bytes([0x1A, 0x45, 0xDF, 0xA3]):  # EBML (WebM/Matroska)
+        return "webm", "audio/webm"
+    if daten[:4] == b"RIFF" and daten[8:12] == b"WAVE":
+        return "wav", "audio/wav"
+    if daten[:4] == b"OggS":
+        return "ogg", "audio/ogg"
+    if daten[:3] == b"ID3" or (len(daten) > 1 and daten[0] == 0xFF and daten[1] & 0xE0 == 0xE0):
+        return "mp3", "audio/mpeg"
+    return "bin", "application/octet-stream"
+
+
 if audio:
-    st.audio(audio["bytes"], format="audio/mpeg")
-    #st.audio(audio["bytes"], format="audio/mp4")
-    audio_format = "mp3"
-    filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}.{audio_format}"
-    # Python Code entscheidet nicht das Format, der Browser entscheidet
-    #st.write(filename)
-    #st.write(audio["format"])
+    endung, mime = erkenne_format(audio["bytes"])
+    st.audio(audio["bytes"], format=mime)
+
+    filename = f"{speaker_key}_{gender_key}_{group_key}_{mic_key}.{endung}"
 
     with open(filename, "wb") as f:
-        f.write(audio["bytes"])  #with open(filename, "rb") as f: #Öffnet die gespeicherte Datei im Binärmodus, weil Audio keine Textdatei ist, sondern rohe Bytes enthält
+        # Binaermodus, weil Audio rohe Bytes enthaelt und keinen Text.
+        f.write(audio["bytes"])
+
+    if endung == "wav":
+        st.caption(f"Gespeichert als {filename} — unkomprimiertes PCM, "
+                   f"Samplerate {audio.get('sample_rate', 'unbekannt')} Hz.")
+    else:
+        st.warning(
+            f"Der Browser hat **{endung.upper()}** geliefert, nicht WAV. Das ist ein "
+            f"verlustbehaftetes Format ohne Bittiefe und mit browserabhaengiger "
+            f"Bandbegrenzung. Aufnahmen aus verschiedenen Browsern sind dann nur "
+            f"eingeschraenkt vergleichbar — siehe AUFNAHMEQUALITAET.md."
+        )
 
     st.download_button(
-        label="Download Audio (MP3)",
+        label=f"Download Audio ({endung.upper()})",
         data=audio["bytes"],
         file_name=filename,
-        mime="audio/mp3"
-    )
-
-    st.download_button(
-        label="Download Audio (WEBM)",
-        data=audio["bytes"],
-        file_name=filename.replace(".mp3", ".webm"),
-        mime="audio/webm"
+        mime=mime,
     )
